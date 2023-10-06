@@ -18,23 +18,28 @@ const objPokemon = async (idPokemon: number): Promise<object> => {
   return dataPokemon
 }
 
-const App = (): JSX.Element => {
-  const [pokemonArray, setPokemons] = useState<object[] | null>(null)
+const usePokemon = (): object[] | null => {
+  const [objPokemonArray, setObjPokemonArray] = useState<object[] | null>(null)
 
   useEffect(() => {
     void (async (): Promise<undefined> => {
       const fiveRandomId = arrayRandomNum(5, 1, 1018)
       const fiveRandomPokemon = await Promise.all(fiveRandomId.map(async id => await objPokemon(id)))
 
-      setPokemons(fiveRandomPokemon)
+      setObjPokemonArray(fiveRandomPokemon)
     })()
   }, [])
 
+  return objPokemonArray
+}
+
+const RandomPokemons = (): JSX.Element => {
+  const objPokemonArray = usePokemon()
+
   return (
-    <>
       <div>
-        {pokemonArray?.map((pokemon: any): JSX.Element => {
-          const { id, name, sprites } = pokemon
+        {objPokemonArray?.map((objPokemon: any): JSX.Element => {
+          const { id, name, sprites } = objPokemon
           const { other: { 'official-artwork': { front_default: imgUrlPokemon } } } = sprites
 
           return (
@@ -45,6 +50,13 @@ const App = (): JSX.Element => {
           )
         })}
       </div>
+  )
+}
+
+const App = (): JSX.Element => {
+  return (
+    <>
+      <RandomPokemons/>
     </>
   )
 }
