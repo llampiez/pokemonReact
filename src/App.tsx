@@ -1,13 +1,13 @@
 import { RandomPokemons } from './components/RandomPokemons'
-import test from './public/pokemonLogo.png'
+import { PokemonList } from './components/PokemonList'
+import { PokeHeader } from './components/PokeHeader'
 
 export const App = (): JSX.Element => {
   return (
     <>
-      <div>
-        <img src={test}/>
-      </div>
+      <PokeHeader/>
       <RandomPokemons/>
+      <PokemonList/>
     </>
   )
 }

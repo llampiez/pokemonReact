@@ -15,3 +15,16 @@ export const objPokemon = async (idPokemon: number): Promise<object> => {
 
   return dataPokemon
 }
+
+export const arrayNumber = (initialNumber: number): number[] => {
+  const arrayNumber = []
+
+  let number = 1 + (initialNumber - 1) * 20
+
+  while (number <= initialNumber * 20) {
+    arrayNumber.push(number)
+    number++
+  }
+
+  return arrayNumber
+}
