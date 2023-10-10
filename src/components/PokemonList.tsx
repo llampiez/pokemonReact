@@ -1,35 +1,48 @@
 import { useState, useEffect } from 'react'
-import { arrayNumber, objPokemon } from '../logic'
-import { Pokemon } from './Pokemon'
+import { Link } from 'react-router-dom'
+import { arrayNumber } from '../logic'
+import { type TPokemon } from '../types'
+import { PokeHeader } from './PokeHeader'
 
-export const PokemonList = (): JSX.Element => {
-  const [numberPage, setNumberPage] = useState(1)
-  const [pokemonList, setPokemonList] = useState<object[] | null>(null)
+export const PokemonList = () => {
+  const [page, setPage] = useState(1)
+  const [arrayPokemon, setArrayPokemon] = useState<TPokemon[] | null>(null)
 
   useEffect(() => {
-    void (async (): Promise<undefined> => {
-      const arrayId = arrayNumber(numberPage)
-      const arrayPokemon = await Promise.all(arrayId.map(async id => await objPokemon(id)))
+    (async () => {
+      const arrayId = arrayNumber(page)
 
-      setPokemonList(arrayPokemon)
+      const fetchArrayPokemon = await Promise.all(
+        arrayId.map(async (id) => {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
+          const data = await response.json()
+
+          return data
+        })
+      )
+
+      setArrayPokemon(fetchArrayPokemon)
     })()
-  }, [numberPage])
-
-  const previousPage = (): void => {
-    if (numberPage > 1) setNumberPage(numberPage - 1)
-  }
-
-  const nextPage = (): void => {
-    if (numberPage < 102) setNumberPage(numberPage + 1)
-  }
+  }, [page])
 
   return (
-    <div>
-      <div className='grid grid-rows-10 grid-cols-2 justify-items-center'>
-        <Pokemon arrayPokemon={pokemonList}/>
+    <>
+      <PokeHeader/>
+      <div className='grid grid-cols-2'>
+          {arrayPokemon?.map(pokemon => {
+            const { id, name, sprites } = pokemon
+            const { other: { 'official-artwork': { front_default: imgUrlPokemon } } } = sprites
+
+            return (
+              <div key={id}>
+                <Link to={`/pokemon/${id}`}>
+                  <img className='w-10 h-10' src={imgUrlPokemon}/>
+                  <p>{name}</p>
+                </Link>
+              </div>
+            )
+          })}
       </div>
-      <button onClick={previousPage}>Previous</button>
-      <button onClick={nextPage}>Next</button>
-    </div>
+    </>
   )
 }

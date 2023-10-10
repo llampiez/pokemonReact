@@ -1,13 +1,14 @@
-import { RandomPokemons } from './components/RandomPokemons'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { PokemonList } from './components/PokemonList'
-import { PokeHeader } from './components/PokeHeader'
+import { Pokemon } from './components/Pokemon'
 
-export const App = (): JSX.Element => {
+export const App = () => {
   return (
-    <>
-      <PokeHeader/>
-      <RandomPokemons/>
-      <PokemonList/>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<PokemonList/>}/>
+        <Route path='/pokemon/:id' element={<Pokemon/>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }

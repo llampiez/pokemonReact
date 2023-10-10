@@ -9,15 +9,8 @@ export const arrayRandomNum = (length: number, minNum: number, maxNum: number): 
   return numbers
 }
 
-export const objPokemon = async (idPokemon: number): Promise<object> => {
-  const responsePokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${idPokemon}`)
-  const dataPokemon = await responsePokemon.json()
-
-  return dataPokemon
-}
-
-export const arrayNumber = (initialNumber: number): number[] => {
-  const arrayNumber = []
+export const arrayNumber = (initialNumber: number) => {
+  const arrayNumber: number[] = []
 
   let number = 1 + (initialNumber - 1) * 20
 
