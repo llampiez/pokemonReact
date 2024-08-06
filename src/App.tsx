@@ -1,13 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { Pokemon } from './components/Pokemon'
-import { FindPokemon } from './components/FindPokemon'
+import RouteComponent from './routes/RouteComponent'
+import React from 'react'
 
 export const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<FindPokemon/>}/>
-        <Route path='/pokemon/:id' element={<Pokemon/>}/>
+        {RouteComponent.map(({ path, component }, index) =>
+          (
+            <Route key={index} path={path} element={React.createElement(component)}/>
+          )
+        )}
       </Routes>
     </BrowserRouter>
   )
